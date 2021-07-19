@@ -4,4 +4,6 @@ class FirestorePath {
   static String entry(String uid, String entryId) =>
       'users/$uid/entries/$entryId';
   static String entries(String uid) => 'users/$uid/entries';
+  static String appPage(String appPageId) => 'pages/$appPageId';
+  static String appPages() => 'pages';
 }
