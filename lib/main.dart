@@ -4,9 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:starter_architecture_flutter_firebase/services/shared_preferences_service.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:loggy/loggy.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  Loggy.initLoggy(
+    logPrinter: const PrettyPrinter(),
+  );
   await Firebase.initializeApp();
   final sharedPreferences = await SharedPreferences.getInstance();
   runApp(ProviderScope(
@@ -57,7 +61,7 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage> with UiLoggy {
   var isDialOpen = ValueNotifier<bool>(false);
   var selectedfABLocation = FloatingActionButtonLocation.endFloat;
   // FloatingActionButtonLocation.startFloat,
@@ -116,8 +120,8 @@ class _MyHomePageState extends State<MyHomePage> {
           renderOverlay: true,
           // overlayColor: Colors.black,
           // overlayOpacity: 0.5,
-          onOpen: () => print('OPENING DIAL'),
-          onClose: () => print('DIAL CLOSED'),
+          onOpen: () => loggy.debug('OPENING DIAL'),
+          onClose: () => loggy.debug('DIAL CLOSED'),
           useRotationAnimation: true,
           tooltip: 'Open Menu',
           heroTag: 'speed-dial-hero-tag',
@@ -136,14 +140,14 @@ class _MyHomePageState extends State<MyHomePage> {
               backgroundColor: Colors.red,
               foregroundColor: Colors.white,
               label: 'First',
-              onTap: () => print('FIRST CHILD'),
+              onTap: () => loggy.debug('FIRST CHILD'),
             ),
             SpeedDialChild(
               child: const Icon(Icons.brush),
               backgroundColor: Colors.deepOrange,
               foregroundColor: Colors.white,
               label: 'Second',
-              onTap: () => print('SECOND CHILD'),
+              onTap: () => loggy.debug('SECOND CHILD'),
             ),
             SpeedDialChild(
               child: const Icon(Icons.margin),
@@ -152,8 +156,8 @@ class _MyHomePageState extends State<MyHomePage> {
               label: 'Show Snackbar',
               visible: true,
               onTap: () => ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text(('Third Child Pressed')))),
-              onLongPress: () => print('THIRD CHILD LONG PRESS'),
+                  const SnackBar(content: Text('Third Child Pressed'))),
+              onLongPress: () => loggy.debug('THIRD CHILD LONG PRESS'),
             ),
           ],
         ),
